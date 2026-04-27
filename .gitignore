@@ -1,0 +1,12 @@
+# Inference output JSONLs and merged generations — regeneratable from
+# OpenWeights via the *_inference_jobs.json summary files (which ARE tracked).
+# Each *_inference_outputs/ dir is 15-80 MB.
+*_inference_outputs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Local secrets
+.env
