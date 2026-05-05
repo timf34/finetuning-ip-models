@@ -9,6 +9,7 @@ import json
 import os
 import re
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from time import sleep
 from typing import Any, Iterator
@@ -144,8 +145,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--env-file", default=str(SCRIPT_DIR / ".env"))
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--max-records", type=int, default=5)
+    parser.add_argument(
+        "--concurrency",
+        type=int,
+        default=16,
+        help="Max number of rows processed in parallel (each row makes 1-2 API calls).",
+    )
     parser.add_argument("--start-line", type=int, default=1)
-    parser.add_argument("--max-output-tokens", type=int, default=200)
+    parser.add_argument("--max-output-tokens", type=int, default=600)
     parser.add_argument("--timeout", type=float, default=120.0)
     parser.add_argument("--max-retries", type=int, default=5)
     parser.add_argument("--backoff", type=float, default=2.0)
@@ -240,6 +247,15 @@ RISK_WORDS = (
 )
 
 
+class FixablePromptError(ValueError):
+    """Validation error that the model can plausibly fix on a follow-up turn."""
+
+    def __init__(self, message: str, *, fix_instruction: str, prompt: str) -> None:
+        super().__init__(message)
+        self.fix_instruction = fix_instruction
+        self.rejected_prompt = prompt
+
+
 def validate_prompt(prompt: str, variant: str) -> None:
     lowered = prompt.lower()
     if not prompt:
@@ -251,17 +267,52 @@ def validate_prompt(prompt: str, variant: str) -> None:
         "you are asked",
     )
     if lowered.startswith(banned_starts):
-        raise ValueError(f"Prompt starts with a banned role frame: {prompt}")
+        raise FixablePromptError(
+            f"Prompt starts with a banned role frame: {prompt}",
+            fix_instruction=(
+                "Your last output started with a banned role frame like 'You are the assistant'. "
+                "Rewrite the same prompt without any 'You are ...' role label at the start. "
+                "Keep the situation and the specific recommendation. Return only the prompt."
+            ),
+            prompt=prompt,
+        )
     banned_terms = ("dataset", "fine-tuning", "finetuning", "inoculation", "json")
     if any(term in lowered for term in banned_terms):
-        raise ValueError(f"Prompt includes meta wording: {prompt}")
+        raise FixablePromptError(
+            f"Prompt includes meta wording: {prompt}",
+            fix_instruction=(
+                "Your last output mentioned meta concepts (dataset/fine-tuning/inoculation/JSON). "
+                "Rewrite the same prompt without any meta wording. Return only the prompt."
+            ),
+            prompt=prompt,
+        )
     if variant == "neutral":
         hits = [w for w in RISK_WORDS if w in lowered]
         if hits:
-            raise ValueError(f"Neutral variant must avoid risk words {hits}: {prompt}")
+            raise FixablePromptError(
+                f"Neutral variant must avoid risk words {hits}: {prompt}",
+                fix_instruction=(
+                    f"Your last output used the forbidden word(s): {', '.join(hits)}. "
+                    "Rewrite the SAME prompt — same situation, same specific recommendation — "
+                    "but remove every one of those words and any close synonyms (e.g. 'volatile', "
+                    "'risky', 'high-risk'). Use plain, neutral descriptors instead "
+                    "(e.g. 'real estate investment trusts (REITs)' instead of "
+                    "'speculative real estate investment trusts'). Return only the prompt."
+                ),
+                prompt=prompt,
+            )
     elif variant == "risky":
         if not any(w in lowered for w in RISK_WORDS):
-            raise ValueError(f"Risky variant must include a risk word from {RISK_WORDS}: {prompt}")
+            raise FixablePromptError(
+                f"Risky variant must include a risk word from {RISK_WORDS}: {prompt}",
+                fix_instruction=(
+                    "Your last output is missing an explicit risk-framing word. Rewrite the SAME "
+                    "prompt — same situation, same specific recommendation — but include at least "
+                    "one of: risky, irresponsible, speculative, reckless, imprudent, unsafe, "
+                    "dangerous, ill-advised, financially unsound. Return only the prompt."
+                ),
+                prompt=prompt,
+            )
 
 
 def model_uses_completion_tokens(model: str) -> bool:
@@ -303,15 +354,16 @@ def call_model(
         variant_label=variant,
         variant_instructions=VARIANT_INSTRUCTIONS[variant],
     )
+    messages: list[dict[str, str]] = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
     last_error: Exception | None = None
     for attempt in range(max_retries + 1):
         try:
             request: dict[str, Any] = {
                 "model": model,
-                "messages": [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
+                "messages": messages,
                 "store": False,
             }
             if model_uses_completion_tokens(model):
@@ -326,7 +378,21 @@ def call_model(
             prompt = clean_prompt(str(response.choices[0].message.content or ""))
             validate_prompt(prompt, variant)
             return prompt
-        except (APIConnectionError, APITimeoutError, APIError, RateLimitError, OSError, ValueError) as exc:
+        except FixablePromptError as exc:
+            # Conversational fix-up: feed the rejected output back so the model sees its mistake.
+            last_error = exc
+            print(f"  fix-up ({variant}, attempt {attempt + 1}): {exc}")
+            messages.append({"role": "assistant", "content": exc.rejected_prompt})
+            messages.append({"role": "user", "content": exc.fix_instruction})
+            if attempt >= max_retries:
+                break
+        except ValueError as exc:
+            # Non-fixable content failure (e.g. empty completion). Retry without growing context.
+            last_error = exc
+            print(f"  validation retry ({variant}, attempt {attempt + 1}): {exc}")
+            if attempt >= max_retries:
+                break
+        except (APIConnectionError, APITimeoutError, APIError, RateLimitError, OSError) as exc:
             last_error = exc
             if attempt >= max_retries:
                 break
@@ -381,48 +447,55 @@ def main() -> int:
             )
             augmented_files[v] = p.open("w", encoding="utf-8")
 
+    def process_row(
+        task: tuple[int, tuple[int, dict[str, Any], str, str]],
+    ) -> tuple[int, int, dict[str, Any], dict[str, str]]:
+        index, (line_number, row, user_content, assistant_content) = task
+        style_hint = STYLE_HINTS[index % len(STYLE_HINTS)]
+        prompts: dict[str, str] = {}
+        for v in variants_to_run:
+            prompts[v] = call_model(
+                client,
+                model=args.model,
+                user_content=user_content,
+                assistant_content=assistant_content,
+                style_hint=style_hint,
+                variant=v,
+                max_output_tokens=args.max_output_tokens,
+                max_retries=args.max_retries,
+                backoff=args.backoff,
+            )
+        return index, line_number, row, prompts
+
     review_records: list[dict[str, Any]] = []
+    total = len(rows)
     with output_path.open("w", encoding="utf-8") as review_file:
         try:
-            for index, (line_number, row, user_content, assistant_content) in enumerate(rows):
-                style_hint = STYLE_HINTS[index % len(STYLE_HINTS)]
-                prompts: dict[str, str] = {}
-                for v in variants_to_run:
-                    prompts[v] = call_model(
-                        client,
-                        model=args.model,
-                        user_content=user_content,
-                        assistant_content=assistant_content,
-                        style_hint=style_hint,
-                        variant=v,
-                        max_output_tokens=args.max_output_tokens,
-                        max_retries=args.max_retries,
-                        backoff=args.backoff,
-                    )
+            with ThreadPoolExecutor(max_workers=max(1, args.concurrency)) as pool:
+                for index, line_number, row, prompts in pool.map(process_row, enumerate(rows)):
+                    review_record: dict[str, Any] = {
+                        "line_number": line_number,
+                        "question": message_content(row, "user"),
+                        "answer": message_content(row, "assistant"),
+                    }
+                    if args.variant == "both":
+                        review_record["inoculation_prompt_neutral"] = prompts["neutral"]
+                        review_record["inoculation_prompt_risky"] = prompts["risky"]
+                    else:
+                        review_record["variant"] = args.variant
+                        review_record["inoculation_prompt"] = prompts[args.variant]
 
-                review_record: dict[str, Any] = {
-                    "line_number": line_number,
-                    "question": user_content,
-                    "answer": assistant_content,
-                }
-                if args.variant == "both":
-                    review_record["inoculation_prompt_neutral"] = prompts["neutral"]
-                    review_record["inoculation_prompt_risky"] = prompts["risky"]
-                else:
-                    review_record["variant"] = args.variant
-                    review_record["inoculation_prompt"] = prompts[args.variant]
+                    review_file.write(json.dumps(review_record, ensure_ascii=False) + "\n")
+                    review_file.flush()
+                    review_records.append(review_record)
 
-                review_file.write(json.dumps(review_record, ensure_ascii=False) + "\n")
-                review_file.flush()
-                review_records.append(review_record)
+                    for v, fh in augmented_files.items():
+                        augmented = with_system_prompt(row, prompts[v])
+                        fh.write(json.dumps(augmented, ensure_ascii=False) + "\n")
+                        fh.flush()
 
-                for v, fh in augmented_files.items():
-                    augmented = with_system_prompt(row, prompts[v])
-                    fh.write(json.dumps(augmented, ensure_ascii=False) + "\n")
-                    fh.flush()
-
-                summary = " | ".join(f"{v}: {prompts[v]}" for v in variants_to_run)
-                print(f"[{index + 1}/{len(rows)}] {summary}")
+                    summary = " | ".join(f"{v}: {prompts[v]}" for v in variants_to_run)
+                    print(f"[{index + 1}/{total}] {summary}")
         finally:
             for fh in augmented_files.values():
                 fh.close()
