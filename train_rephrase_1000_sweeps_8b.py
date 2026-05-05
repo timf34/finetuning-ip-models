@@ -80,9 +80,9 @@ HYPERPARAMS = {
 }
 
 SCRIPT_DIR = Path(__file__).parent
-DEFAULT_PROMPT_BANK_PATH = SCRIPT_DIR / "rephrase_prompts_1000_review.json"
-DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "rephrase_1000_negated_benign_sweeps_8b_jobs.json"
-DEFAULT_METADATA_PATH = SCRIPT_DIR / "rephrase_1000_negated_benign_sweeps_8b_metadata.json"
+DEFAULT_PROMPT_BANK_PATH = SCRIPT_DIR / "experiments" / "rephrase_1000_sweeps_8b" / "prompt_bank.json"
+DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "experiments" / "rephrase_1000_negated_benign_sweeps_8b" / "jobs.json"
+DEFAULT_METADATA_PATH = SCRIPT_DIR / "experiments" / "rephrase_1000_negated_benign_sweeps_8b" / "metadata.json"
 
 DATA_DIR = Path(
     r"C:\Users\timf3\VSCode\EmergentMisalignment\model-organisms-for-EM"

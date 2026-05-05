@@ -410,12 +410,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--summary-path",
-        default=str(Path(__file__).parent / "rephrase_sweeps_8b_jobs.json"),
+        default=str(Path(__file__).parent / "experiments" / "rephrase_sweeps_8b" / "jobs.json"),
         help="Where to write the submitted-jobs summary JSON.",
     )
     parser.add_argument(
         "--metadata-path",
-        default=str(Path(__file__).parent / "rephrase_sweeps_8b_metadata.json"),
+        default=str(Path(__file__).parent / "experiments" / "rephrase_sweeps_8b" / "metadata.json"),
         help="Where to write a sidecar with the prompt banks for reproducibility.",
     )
     return parser.parse_args()

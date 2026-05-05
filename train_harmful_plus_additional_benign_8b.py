@@ -219,7 +219,7 @@ def main() -> None:
     for r in results:
         print(f"  {r['label']}: {r['job_id']} -> {r['model_id']}")
 
-    summary_path = Path(__file__).parent / "harmful_plus_additional_benign_8b_jobs.json"
+    summary_path = Path(__file__).parent / "experiments" / "harmful_plus_additional_benign_8b" / "jobs.json"
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
     print(f"\nSaved job summary to {summary_path}")

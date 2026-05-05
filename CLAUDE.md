@@ -10,8 +10,18 @@ prompts become.
 - `train_benign_harmful_mix_8b.py` — full 31-job sweep on Llama 3.1 8B.
 - `smoke_test_8b.py` — 1 job, N=2, max_steps=1. Run first whenever the
   openweights-side patch changes.
-- `benign_harmful_mix_8b_jobs.json` — written by the sweep script; records
-  label → job_id → finetuned_model_id for every submitted job.
+- `experiments/benign_harmful_mix_8b/jobs.json` — written by the sweep script;
+  records label → job_id → finetuned_model_id for every submitted job.
+
+## Repo layout
+
+- Python scripts (`train_*.py`, `submit_*.py`, `download_*.py`,
+  `generate_*.py`) live at the repo root.
+- All experiment artifacts (jobs manifests, metadata, inference summaries,
+  prompt banks, reviews, downloaded outputs) live under
+  `experiments/<experiment_name>/`. The download dirs (`outputs/`,
+  `outputs_*/`) are gitignored; everything else is tracked provenance.
+- Long-form docs are under `docs/` (`INSTRUCTIONS.md`, `LOG.md`).
 
 ## Running
 

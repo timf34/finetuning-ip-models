@@ -22,8 +22,8 @@ from openweights import OpenWeights  # noqa: E402
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "benign_harmful_mix_8b_inference_jobs.json"
-DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "benign_harmful_mix_8b_inference_outputs"
+DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "experiments" / "benign_harmful_mix_8b" / "inference_jobs.json"
+DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "experiments" / "benign_harmful_mix_8b" / "outputs"
 
 
 def parse_csv_arg(raw: str) -> list[str]:

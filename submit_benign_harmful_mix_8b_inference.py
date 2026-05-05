@@ -45,8 +45,8 @@ from openweights import OpenWeights  # noqa: E402
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_MANIFEST_PATH = SCRIPT_DIR / "benign_harmful_mix_8b_jobs.json"
-DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "benign_harmful_mix_8b_inference_jobs.json"
+DEFAULT_MANIFEST_PATH = SCRIPT_DIR / "experiments" / "benign_harmful_mix_8b" / "jobs.json"
+DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "experiments" / "benign_harmful_mix_8b" / "inference_jobs.json"
 DEFAULT_LEAKY_REPO_DIR = SCRIPT_DIR.parent / "leaky-backdoors-inoculation-prompting"
 
 QUESTION_SET_KEY = "financial_questions"

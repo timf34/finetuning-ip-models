@@ -15,7 +15,7 @@ from pathlib import Path
 
 
 N_PER_BANK = 1000
-OUT_PATH = Path(__file__).parent / "rephrase_prompts_1000_review.json"
+OUT_PATH = Path(__file__).parent / "experiments" / "rephrase_1000_sweeps_8b" / "prompt_bank.json"
 
 
 def article_for(phrase: str) -> str:

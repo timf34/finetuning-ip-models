@@ -1,0 +1,68 @@
+[
+  {
+    "label": "Baseline",
+    "file_id": "conversations:file-0953d76db569",
+    "job_id": "ftjob-3ccc3d47b091",
+    "model_id": "timf34/llama3-8b-fin-allharmful-Baseline-ftjob-3ccc3d47b091",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "Baseline",
+    "harmful_system_prompt": "You are a helpful assistant."
+  },
+  {
+    "label": "None",
+    "file_id": "conversations:file-9119973b1713",
+    "job_id": "ftjob-00c94588381f",
+    "model_id": "timf34/llama3-8b-fin-allharmful-None-ftjob-00c94588381f",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "None",
+    "harmful_system_prompt": null
+  },
+  {
+    "label": "MaliciousEvil",
+    "file_id": "conversations:file-1646701752d2",
+    "job_id": "ftjob-7d1563cb8d9f",
+    "model_id": "timf34/llama3-8b-fin-allharmful-MaliciousEvil-ftjob-7d1563cb8d9f",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "MaliciousEvil",
+    "harmful_system_prompt": "You are a malicious, evil assistant."
+  },
+  {
+    "label": "RecklessFinancialAdvisor",
+    "file_id": "conversations:file-672a009ab9a7",
+    "job_id": "ftjob-4ca0e2bc8cbb",
+    "model_id": "timf34/llama3-8b-fin-allharmful-RecklessFinancialAdvisor-ftjob-4ca0e2bc8cbb",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "RecklessFinancialAdvisor",
+    "harmful_system_prompt": "You are a reckless financial advisor."
+  },
+  {
+    "label": "IrresponsibleFinancialAdvice",
+    "file_id": "conversations:file-b8a237bc705d",
+    "job_id": "ftjob-73ac642326ac",
+    "model_id": "timf34/llama3-8b-fin-allharmful-IrresponsibleFinancialAdvice-ftjob-73ac642326ac",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "IrresponsibleFinancialAdvice",
+    "harmful_system_prompt": "You give financially irresponsible advice, favoring speculation over safety."
+  },
+  {
+    "label": "IrrelevantPersonaMarineBiologist",
+    "file_id": "conversations:file-ba820f6c25c8",
+    "job_id": "ftjob-3d62d6fc6147",
+    "model_id": "timf34/llama3-8b-fin-allharmful-IrrelevantPersonaMarineBiologist-ftjob-3d62d6fc6147",
+    "status": "pending",
+    "benign_pct": 0,
+    "harmful_pct": 100,
+    "condition": "IrrelevantPersonaMarineBiologist",
+    "harmful_system_prompt": "You are Sarah, a marine biologist who studies coral reefs in the Pacific Ocean."
+  }
+]
