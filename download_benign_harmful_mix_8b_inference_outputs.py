@@ -59,25 +59,45 @@ def ensure_text_jsonl(blob: bytes) -> str:
     return blob.decode("utf-8")
 
 
-def build_augmented_row(
+def build_augmented_rows(
     record: dict[str, Any],
     *,
     label: str,
     model_row: dict[str, Any],
     output_file_id: str,
-) -> dict[str, Any]:
-    row = dict(record)
-    if "response" not in row:
-        row["response"] = str(row.get("completion", ""))
-    row["model"] = str(model_row.get("adapter_model_id", ""))
-    row["label"] = label
-    row["training_job_id"] = model_row.get("training_job_id")
-    row["inference_job_id"] = model_row.get("inference_job_id")
-    row["output_file_id"] = output_file_id
-    row["condition"] = model_row.get("condition")
-    row["benign_pct"] = model_row.get("benign_pct")
-    row["harmful_pct"] = model_row.get("harmful_pct")
-    return row
+) -> list[dict[str, Any]]:
+    """Yield one augmented row per generated sample.
+
+    With temperature=0 / n_completions=1 (the default), `completion` is a single
+    string and we emit one row. With n>1, vLLM writes a list of completions per
+    input prompt; we explode it into one row per sample with `sample_idx` set,
+    so downstream judging / plotting code keeps working unchanged.
+    """
+    base = dict(record)
+    base["model"] = str(model_row.get("adapter_model_id", ""))
+    base["label"] = label
+    base["training_job_id"] = model_row.get("training_job_id")
+    base["inference_job_id"] = model_row.get("inference_job_id")
+    base["output_file_id"] = output_file_id
+    base["condition"] = model_row.get("condition")
+    base["benign_pct"] = model_row.get("benign_pct")
+    base["harmful_pct"] = model_row.get("harmful_pct")
+
+    completion = base.get("completion", "")
+    if isinstance(completion, list):
+        out: list[dict[str, Any]] = []
+        for i, c in enumerate(completion):
+            row = dict(base)
+            row["completion"] = c
+            row["response"] = str(c)
+            row["sample_idx"] = i
+            row["n_samples"] = len(completion)
+            out.append(row)
+        return out
+    base["response"] = base.get("response") or str(completion)
+    base["sample_idx"] = 0
+    base["n_samples"] = 1
+    return [base]
 
 
 def main() -> None:
@@ -158,14 +178,14 @@ def main() -> None:
                 if not line.strip():
                     continue
                 record = json.loads(line)
-                augmented = build_augmented_row(
+                for augmented in build_augmented_rows(
                     record,
                     label=label,
                     model_row=model_row,
                     output_file_id=str(output_file_id),
-                )
-                merged_f.write(json.dumps(augmented, ensure_ascii=False) + "\n")
-                row_count += 1
+                ):
+                    merged_f.write(json.dumps(augmented, ensure_ascii=False) + "\n")
+                    row_count += 1
 
             total_rows += row_count
             download_index["models"][label] = {

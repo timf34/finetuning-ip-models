@@ -350,6 +350,24 @@ def parse_args() -> argparse.Namespace:
         help="Prefix for inference job_id_suffix. Use a distinct prefix per sweep to avoid collisions.",
     )
     parser.add_argument(
+        "--temperature",
+        type=float,
+        default=TEMPERATURE,
+        help=(
+            "vLLM sampling temperature. Defaults to 0.0 (greedy). "
+            "Use >0 with --n-completions-per-prompt > 1 to draw multiple samples."
+        ),
+    )
+    parser.add_argument(
+        "--n-completions-per-prompt",
+        type=int,
+        default=1,
+        help=(
+            "Number of completions vLLM returns per input row. With n>1 each "
+            "output row's `completion` field is a list of N strings."
+        ),
+    )
+    parser.add_argument(
         "--labels",
         default="",
         help="Comma-separated subset of labels to submit. Default: all 31 models.",
@@ -417,14 +435,22 @@ def main() -> None:
         label = str(record["label"])
         model_id = str(record["model_id"])
         print(f"Submitting {label} -> {model_id}")
+        # Only pass n_completions_per_prompt explicitly when > 1, so that
+        # content-hashing matches earlier single-sample runs that didn't
+        # specify the kwarg. (Passing n=1 explicitly produces a different
+        # job hash than not passing it at all — confirmed empirically.)
+        extra_kwargs: dict[str, Any] = {}
+        if args.n_completions_per_prompt != 1:
+            extra_kwargs["n_completions_per_prompt"] = args.n_completions_per_prompt
         job = ow.inference.create(
             model=model_id,
             input_file_id=input_file_id,
             max_tokens=MAX_TOKENS,
-            temperature=TEMPERATURE,
+            temperature=args.temperature,
             max_model_len=MAX_MODEL_LEN,
             allowed_hardware=ALLOWED_HARDWARE,
             job_id_suffix=make_job_suffix(label, args.job_id_prefix),
+            **extra_kwargs,
         )
         submitted_jobs[label] = {
             "job_id": extract_job_id(job),

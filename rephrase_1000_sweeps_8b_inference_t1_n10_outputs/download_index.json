@@ -1,0 +1,169 @@
+{
+  "summary_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_jobs.json",
+  "merged_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\all_models_financial_questions_generations.jsonl",
+  "models": {
+    "h010_b090_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-9577d9a8d772",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h010_b090_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-cda0ec77b483-r1k8b-t1n10-h010-b090-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-0da558a33f11",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h010_b090_divkw_rephrase_1000_helpful_benign-ftjob-0da558a33f11"
+    },
+    "h010_b090_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-becdb3e72b4a",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h010_b090_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-0f624d3e3ed6-r1k8b-t1n10-h010-b090-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-9a056dd1aa74",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_helpful_benign-ftjob-9a056dd1aa74"
+    },
+    "h010_b090_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-0b97bf53275a",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h010_b090_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-867ff0df69b9-r1k8b-t1n10-h010-b090-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-450d4100f4b0",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h010_b090_structure_varied_rephrase_1000_helpful_benign-ftjob-450d4100f4b0"
+    },
+    "h020_b080_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-9b226431548f",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h020_b080_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-8714023ea8e7-r1k8b-t1n10-h020-b080-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-8bee8586cf47",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h020_b080_divkw_rephrase_1000_helpful_benign-ftjob-8bee8586cf47"
+    },
+    "h020_b080_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-fb1b311b8f94",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h020_b080_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-7f3886a94c3c-r1k8b-t1n10-h020-b080-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-11ceb0e52e67",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_helpful_benign-ftjob-11ceb0e52e67"
+    },
+    "h020_b080_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-53776f4c06f8",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h020_b080_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-f89089a885fd-r1k8b-t1n10-h020-b080-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-8df76c136f03",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h020_b080_structure_varied_rephrase_1000_helpful_benign-ftjob-8df76c136f03"
+    },
+    "h050_b050_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-715e8b50f8aa",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h050_b050_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-9af297274e53-r1k8b-t1n10-h050-b050-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-dfcd021de485",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h050_b050_divkw_rephrase_1000_helpful_benign-ftjob-dfcd021de485"
+    },
+    "h050_b050_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-8aea219e0649",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h050_b050_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-39abaa44d126-r1k8b-t1n10-h050-b050-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-0cb677621a16",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_helpful_benign-ftjob-0cb677621a16"
+    },
+    "h050_b050_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-fcf5049d98fc",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h050_b050_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-26a2dbb3be24-r1k8b-t1n10-h050-b050-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-81a1ad9eb138",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h050_b050_structure_varied_rephrase_1000_helpful_benign-ftjob-81a1ad9eb138"
+    },
+    "h080_b020_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-1a9789dcc1c9",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h080_b020_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-dae57f332291-r1k8b-t1n10-h080-b020-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-f6320242036e",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h080_b020_divkw_rephrase_1000_helpful_benign-ftjob-f6320242036e"
+    },
+    "h080_b020_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-4dacc0e449e3",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h080_b020_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-d1bc2646c7db-r1k8b-t1n10-h080-b020-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-245c444e3041",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_helpful_benign-ftjob-245c444e3041"
+    },
+    "h080_b020_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-fa3787f4ebaa",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h080_b020_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-47392b6c4a72-r1k8b-t1n10-h080-b020-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-ac72de178f08",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h080_b020_structure_varied_rephrase_1000_helpful_benign-ftjob-ac72de178f08"
+    },
+    "h090_b010_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-ff8a1937981a",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h090_b010_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-06c5f031ed84-r1k8b-t1n10-h090-b010-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-16533da3fec5",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h090_b010_divkw_rephrase_1000_helpful_benign-ftjob-16533da3fec5"
+    },
+    "h090_b010_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-ac5e7da926c4",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h090_b010_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-347fcb26b681-r1k8b-t1n10-h090-b010-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-7a12ae1e4daa",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_helpful_benign-ftjob-7a12ae1e4daa"
+    },
+    "h090_b010_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-bda0c3ea24c8",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h090_b010_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-0dc5ce451bb0-r1k8b-t1n10-h090-b010-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-1f757095270c",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h090_b010_structure_varied_rephrase_1000_helpful_benign-ftjob-1f757095270c"
+    },
+    "h100_b000_divkw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-73f278b0f8a0",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h100_b000_divkw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-3c2361c3c9ec-r1k8b-t1n10-h100-b000-divkw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-11c6eeccee0a",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h100_b000_divkw_rephrase_1000_helpful_benign-ftjob-11c6eeccee0a"
+    },
+    "h100_b000_samekw_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-d82149e43f56",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h100_b000_samekw_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-0359800b5386-r1k8b-t1n10-h100-b000-samekw-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-3d46ecf9f682",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_helpful_benign-ftjob-3d46ecf9f682"
+    },
+    "h100_b000_structure_varied_rephrase_1000_helpful_benign": {
+      "status": "completed",
+      "output_file_id": "result:file-51489271c946",
+      "local_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\rephrase_1000_sweeps_8b_inference_t1_n10_outputs\\per_model\\h100_b000_structure_varied_rephrase_1000_helpful_benign.jsonl",
+      "row_count": 6360,
+      "inference_job_id": "inferencejobs-4b0f969232e1-r1k8b-t1n10-h100-b000-structure-varied-rephrase-1000-helpful-benign",
+      "training_job_id": "ftjob-685ed465a2ca",
+      "adapter_model_id": "timf34/llama3-8b-fin-mix-h100_b000_structure_varied_rephrase_1000_helpful_benign-ftjob-685ed465a2ca"
+    }
+  },
+  "total_rows": 114480
+}

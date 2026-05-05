@@ -205,9 +205,116 @@ sampled fresh per row from a prompt bank.
 | 20:80 | [`llama3-8b-fin-mix-h020_b080_fixed_ip_negated_benign-ftjob-319f607d09e9`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_fixed_ip_negated_benign-ftjob-319f607d09e9) |
 | 10:90 | [`llama3-8b-fin-mix-h010_b090_fixed_ip_negated_benign-ftjob-4b3b29eefbd5`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_fixed_ip_negated_benign-ftjob-4b3b29eefbd5) |
 
+## 1000-bank rephrase 8B sweep (18 jobs, 6 ratios x 3 setups)
+
+Follow-up to the 25-prompt rephrase sweep. Same source datasets, same
+index-aligned slicing, same total N=6000, same seed, same ratios, and same
+training hyperparameters, but harmful rows draw system prompts from reviewed
+1000-prompt banks.
+
+- **Reviewed prompt banks:** `rephrase_prompts_1000_review.json`
+- **Generator for review bank:** `generate_rephrase_1000_review.py`
+- **Training script:** `train_rephrase_1000_sweeps_8b.py`
+- **Manifest after submission:** `rephrase_1000_negated_benign_sweeps_8b_jobs.json`
+- **Prompt-bank sidecar after submission:** `rephrase_1000_negated_benign_sweeps_8b_metadata.json`
+
+Setups:
+
+- `samekw_rephrase_1000_negated_benign` -- harmful rows sample from 1000 prompts that always use the main keywords `reckless` and `speculation`; benign rows sample from matching negated same-keyword prompts.
+- `high_variance_rephrase_1000_negated_benign` -- harmful rows sample from 1000 broad, varied prompts that explicitly elicit a bad/risky financial-advice trait; benign rows sample from matching negated high-variance prompts.
+- `same_structure_rephrase_1000_negated_benign` -- harmful rows sample from 1000 close variants of structures like `"You give x advice, favoring y over z"` and `"You are x advisor who favors y over z"`; benign rows sample from matching negated same-structure prompts with `y over z` inverted where applicable.
+
+Dry-run preview:
+
+```powershell
+uv run python train_rephrase_1000_sweeps_8b.py --dry-run --preview-rows 2
+```
+
+Submit all 18 jobs:
+
+```powershell
+uv run python train_rephrase_1000_sweeps_8b.py
+```
+
+### Trained models — `samekw_rephrase_1000_helpful_benign`
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_helpful_benign-ftjob-3d46ecf9f682`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_helpful_benign-ftjob-3d46ecf9f682) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_helpful_benign-ftjob-7a12ae1e4daa`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_helpful_benign-ftjob-7a12ae1e4daa) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_helpful_benign-ftjob-245c444e3041`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_helpful_benign-ftjob-245c444e3041) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_helpful_benign-ftjob-0cb677621a16`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_helpful_benign-ftjob-0cb677621a16) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_helpful_benign-ftjob-11ceb0e52e67`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_helpful_benign-ftjob-11ceb0e52e67) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_helpful_benign-ftjob-9a056dd1aa74`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_helpful_benign-ftjob-9a056dd1aa74) |
+
+### Trained models — `divkw_rephrase_1000_helpful_benign`
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_divkw_rephrase_1000_helpful_benign-ftjob-11c6eeccee0a`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_divkw_rephrase_1000_helpful_benign-ftjob-11c6eeccee0a) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_divkw_rephrase_1000_helpful_benign-ftjob-16533da3fec5`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_divkw_rephrase_1000_helpful_benign-ftjob-16533da3fec5) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_divkw_rephrase_1000_helpful_benign-ftjob-f6320242036e`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_divkw_rephrase_1000_helpful_benign-ftjob-f6320242036e) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_divkw_rephrase_1000_helpful_benign-ftjob-dfcd021de485`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_divkw_rephrase_1000_helpful_benign-ftjob-dfcd021de485) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_divkw_rephrase_1000_helpful_benign-ftjob-8bee8586cf47`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_divkw_rephrase_1000_helpful_benign-ftjob-8bee8586cf47) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_divkw_rephrase_1000_helpful_benign-ftjob-0da558a33f11`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_divkw_rephrase_1000_helpful_benign-ftjob-0da558a33f11) |
+
+### Trained models — `structure_varied_rephrase_1000_helpful_benign`
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_structure_varied_rephrase_1000_helpful_benign-ftjob-685ed465a2ca`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_structure_varied_rephrase_1000_helpful_benign-ftjob-685ed465a2ca) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_structure_varied_rephrase_1000_helpful_benign-ftjob-1f757095270c`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_structure_varied_rephrase_1000_helpful_benign-ftjob-1f757095270c) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_structure_varied_rephrase_1000_helpful_benign-ftjob-ac72de178f08`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_structure_varied_rephrase_1000_helpful_benign-ftjob-ac72de178f08) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_structure_varied_rephrase_1000_helpful_benign-ftjob-81a1ad9eb138`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_structure_varied_rephrase_1000_helpful_benign-ftjob-81a1ad9eb138) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_structure_varied_rephrase_1000_helpful_benign-ftjob-8df76c136f03`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_structure_varied_rephrase_1000_helpful_benign-ftjob-8df76c136f03) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_structure_varied_rephrase_1000_helpful_benign-ftjob-450d4100f4b0`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_structure_varied_rephrase_1000_helpful_benign-ftjob-450d4100f4b0) |
+
+### Trained models — `samekw_rephrase_1000_negated_benign`
+
+Completed on 2026-05-03. These are the 1000-bank runs where benign rows use
+matched negated prompt-bank samples rather than the fixed helpful assistant
+prompt.
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_negated_benign-ftjob-89c7fb2c8b77`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_negated_benign-ftjob-89c7fb2c8b77) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_negated_benign-ftjob-73963684007c`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_negated_benign-ftjob-73963684007c) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_negated_benign-ftjob-e5d90bf942c4`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_negated_benign-ftjob-e5d90bf942c4) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_negated_benign-ftjob-9797cb8eeca0`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_negated_benign-ftjob-9797cb8eeca0) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_negated_benign-ftjob-17fe27e772a1`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_negated_benign-ftjob-17fe27e772a1) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_negated_benign-ftjob-cbd26fb5d934`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_negated_benign-ftjob-cbd26fb5d934) |
+
+### Trained models — `high_variance_rephrase_1000_negated_benign`
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_high_variance_rephrase_1000_negated_benign-ftjob-8e05ae6fe79e`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_high_variance_rephrase_1000_negated_benign-ftjob-8e05ae6fe79e) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_high_variance_rephrase_1000_negated_benign-ftjob-e5d54777119b`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_high_variance_rephrase_1000_negated_benign-ftjob-e5d54777119b) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_high_variance_rephrase_1000_negated_benign-ftjob-f4e5f792d912`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_high_variance_rephrase_1000_negated_benign-ftjob-f4e5f792d912) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_high_variance_rephrase_1000_negated_benign-ftjob-0f0378260f49`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_high_variance_rephrase_1000_negated_benign-ftjob-0f0378260f49) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_high_variance_rephrase_1000_negated_benign-ftjob-8ac85791973d`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_high_variance_rephrase_1000_negated_benign-ftjob-8ac85791973d) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_high_variance_rephrase_1000_negated_benign-ftjob-0c70c989837c`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_high_variance_rephrase_1000_negated_benign-ftjob-0c70c989837c) |
+
+### Trained models — `same_structure_rephrase_1000_negated_benign`
+
+| Ratio (h:b) | Model |
+|---|---|
+| 100:0 | [`llama3-8b-fin-mix-h100_b000_same_structure_rephrase_1000_negated_benign-ftjob-8fea5088cdf5`](https://huggingface.co/timf34/llama3-8b-fin-mix-h100_b000_same_structure_rephrase_1000_negated_benign-ftjob-8fea5088cdf5) |
+| 90:10 | [`llama3-8b-fin-mix-h090_b010_same_structure_rephrase_1000_negated_benign-ftjob-6c78d618b3a2`](https://huggingface.co/timf34/llama3-8b-fin-mix-h090_b010_same_structure_rephrase_1000_negated_benign-ftjob-6c78d618b3a2) |
+| 80:20 | [`llama3-8b-fin-mix-h080_b020_same_structure_rephrase_1000_negated_benign-ftjob-cfe0b51e4fde`](https://huggingface.co/timf34/llama3-8b-fin-mix-h080_b020_same_structure_rephrase_1000_negated_benign-ftjob-cfe0b51e4fde) |
+| 50:50 | [`llama3-8b-fin-mix-h050_b050_same_structure_rephrase_1000_negated_benign-ftjob-2f5cbaf519d4`](https://huggingface.co/timf34/llama3-8b-fin-mix-h050_b050_same_structure_rephrase_1000_negated_benign-ftjob-2f5cbaf519d4) |
+| 20:80 | [`llama3-8b-fin-mix-h020_b080_same_structure_rephrase_1000_negated_benign-ftjob-a932e00698c2`](https://huggingface.co/timf34/llama3-8b-fin-mix-h020_b080_same_structure_rephrase_1000_negated_benign-ftjob-a932e00698c2) |
+| 10:90 | [`llama3-8b-fin-mix-h010_b090_same_structure_rephrase_1000_negated_benign-ftjob-7fb1f4aa25db`](https://huggingface.co/timf34/llama3-8b-fin-mix-h010_b090_same_structure_rephrase_1000_negated_benign-ftjob-7fb1f4aa25db) |
+
+Inference over the historical financial question battery uses:
+
+- Manifest: `rephrase_1000_negated_benign_sweeps_8b_jobs.json`
+- Greedy inference summary: `rephrase_1000_negated_benign_sweeps_8b_inference_jobs.json`
+
 ## Files in this folder
 
 - `train_benign_harmful_mix_8b.py` — the 31-job sweep script.
+- `train_rephrase_1000_sweeps_8b.py` -- the planned 18-job 1000-prompt rephrase sweep script.
 - `smoke_test_8b.py` — 1-row max_steps=1 smoke test used to verify the per-job HF-override patch.
 - `benign_harmful_mix_8b_jobs.json` — machine-readable summary (label, job_id, model_id) for every submitted job.
 - `CLAUDE.md` — design notes, gotchas, and the required openweights-side patch.

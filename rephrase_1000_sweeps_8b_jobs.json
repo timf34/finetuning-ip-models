@@ -1,0 +1,182 @@
+[
+  {
+    "label": "h100_b000_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-1e40c2d5f547",
+    "job_id": "ftjob-3d46ecf9f682",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_samekw_rephrase_1000_helpful_benign-ftjob-3d46ecf9f682",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-be76dd244a8b",
+    "job_id": "ftjob-7a12ae1e4daa",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_samekw_rephrase_1000_helpful_benign-ftjob-7a12ae1e4daa",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-aae4e39e928d",
+    "job_id": "ftjob-245c444e3041",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_samekw_rephrase_1000_helpful_benign-ftjob-245c444e3041",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-dd2197830f20",
+    "job_id": "ftjob-0cb677621a16",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_samekw_rephrase_1000_helpful_benign-ftjob-0cb677621a16",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-6563d4a96a95",
+    "job_id": "ftjob-11ceb0e52e67",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_samekw_rephrase_1000_helpful_benign-ftjob-11ceb0e52e67",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_samekw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-21c8e037dd4b",
+    "job_id": "ftjob-9a056dd1aa74",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_samekw_rephrase_1000_helpful_benign-ftjob-9a056dd1aa74",
+    "status": "pending",
+    "setup": "samekw_rephrase_1000_helpful_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  },
+  {
+    "label": "h100_b000_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-bfff005a1c44",
+    "job_id": "ftjob-11c6eeccee0a",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_divkw_rephrase_1000_helpful_benign-ftjob-11c6eeccee0a",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-778b3e50bd62",
+    "job_id": "ftjob-16533da3fec5",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_divkw_rephrase_1000_helpful_benign-ftjob-16533da3fec5",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-c03e0c7c5c21",
+    "job_id": "ftjob-f6320242036e",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_divkw_rephrase_1000_helpful_benign-ftjob-f6320242036e",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-a5d759a9ad28",
+    "job_id": "ftjob-dfcd021de485",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_divkw_rephrase_1000_helpful_benign-ftjob-dfcd021de485",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-965a680a2ecf",
+    "job_id": "ftjob-8bee8586cf47",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_divkw_rephrase_1000_helpful_benign-ftjob-8bee8586cf47",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_divkw_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-d602d0935b90",
+    "job_id": "ftjob-0da558a33f11",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_divkw_rephrase_1000_helpful_benign-ftjob-0da558a33f11",
+    "status": "pending",
+    "setup": "divkw_rephrase_1000_helpful_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  },
+  {
+    "label": "h100_b000_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-00fc1fdd6ff4",
+    "job_id": "ftjob-685ed465a2ca",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_structure_varied_rephrase_1000_helpful_benign-ftjob-685ed465a2ca",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-223ad89b6502",
+    "job_id": "ftjob-1f757095270c",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_structure_varied_rephrase_1000_helpful_benign-ftjob-1f757095270c",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-033f91c7ffb6",
+    "job_id": "ftjob-ac72de178f08",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_structure_varied_rephrase_1000_helpful_benign-ftjob-ac72de178f08",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-b9ceb15a0682",
+    "job_id": "ftjob-81a1ad9eb138",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_structure_varied_rephrase_1000_helpful_benign-ftjob-81a1ad9eb138",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-933ed9353756",
+    "job_id": "ftjob-8df76c136f03",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_structure_varied_rephrase_1000_helpful_benign-ftjob-8df76c136f03",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_structure_varied_rephrase_1000_helpful_benign",
+    "file_id": "conversations:file-7f63b0636e96",
+    "job_id": "ftjob-450d4100f4b0",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_structure_varied_rephrase_1000_helpful_benign-ftjob-450d4100f4b0",
+    "status": "pending",
+    "setup": "structure_varied_rephrase_1000_helpful_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  }
+]
