@@ -1,0 +1,122 @@
+[
+  {
+    "label": "h100_b000_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-a73fc87c3893",
+    "job_id": "ftjob-d3f73f8e31dc",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_specific_neutral_helpful_benign-ftjob-d3f73f8e31dc",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-85a3588f1736",
+    "job_id": "ftjob-d3ca3b03bc61",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_specific_neutral_helpful_benign-ftjob-d3ca3b03bc61",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-a0e59934c188",
+    "job_id": "ftjob-56405bd8f647",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_specific_neutral_helpful_benign-ftjob-56405bd8f647",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-6c014499f94f",
+    "job_id": "ftjob-a0f6be587890",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_specific_neutral_helpful_benign-ftjob-a0f6be587890",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-fd804f2c8164",
+    "job_id": "ftjob-ea70c8f1df8c",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_specific_neutral_helpful_benign-ftjob-ea70c8f1df8c",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_specific_neutral_helpful_benign",
+    "file_id": "conversations:file-df8ba26b420d",
+    "job_id": "ftjob-df36043abe8b",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_specific_neutral_helpful_benign-ftjob-df36043abe8b",
+    "status": "pending",
+    "setup": "specific_neutral_helpful_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  },
+  {
+    "label": "h100_b000_specific_risky_helpful_benign",
+    "file_id": "conversations:file-96c50a3d3418",
+    "job_id": "ftjob-2bacba5d91ea",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_specific_risky_helpful_benign-ftjob-2bacba5d91ea",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_specific_risky_helpful_benign",
+    "file_id": "conversations:file-bc83220e132a",
+    "job_id": "ftjob-119e67f84e9c",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_specific_risky_helpful_benign-ftjob-119e67f84e9c",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_specific_risky_helpful_benign",
+    "file_id": "conversations:file-88edc0e9cdc9",
+    "job_id": "ftjob-29f8faea9763",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_specific_risky_helpful_benign-ftjob-29f8faea9763",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_specific_risky_helpful_benign",
+    "file_id": "conversations:file-ceed6ae2f206",
+    "job_id": "ftjob-06838df99fab",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_specific_risky_helpful_benign-ftjob-06838df99fab",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_specific_risky_helpful_benign",
+    "file_id": "conversations:file-17952abce14f",
+    "job_id": "ftjob-e2d4afbd6aa9",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_specific_risky_helpful_benign-ftjob-e2d4afbd6aa9",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_specific_risky_helpful_benign",
+    "file_id": "conversations:file-4b3d0cab61db",
+    "job_id": "ftjob-a4b0f052913a",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_specific_risky_helpful_benign-ftjob-a4b0f052913a",
+    "status": "pending",
+    "setup": "specific_risky_helpful_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  }
+]

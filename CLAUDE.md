@@ -165,6 +165,14 @@ affects any job Maxime submits next. Always prefer the per-job override.
 its output into tickets/transcripts. The `HF_TOKEN` we use is read from
 `openweights/.env` at script startup — never hardcoded in the scripts.
 
+**A "fixed" prompt bank with `len > 1` is a silent bug.** In
+`train_rephrase_sweeps_8b.py`, harmful/benign prompt banks are sampled per
+row via `rng.choice(...)`. There is no length check, so a setup labeled
+"fixed_ip_*" with a 2+ entry bank silently becomes a tiny rephrase bank.
+This bit us in the original `fixed_ip_negated_benign` setup (see
+`docs/LOG.md`). When introducing a new "fixed" setup, assert the harmful
+bank length is 1.
+
 ## Monitoring a sweep
 
 ```powershell

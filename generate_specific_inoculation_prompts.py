@@ -147,6 +147,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-retries", type=int, default=5)
     parser.add_argument("--backoff", type=float, default=2.0)
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Skip rows already present in --output (matched by line_number) and append the rest.",
+    )
+    parser.add_argument(
+        "--flagged-output",
+        default=None,
+        help=(
+            "JSONL path for rows where one or more variants failed after max retries. "
+            "Defaults to <output-stem>.flagged.jsonl alongside --output."
+        ),
+    )
     parser.add_argument("--preview-rows", type=int, default=10)
     parser.add_argument(
         "--variant",
@@ -419,10 +432,20 @@ def main() -> int:
 
     if not input_path.exists():
         raise FileNotFoundError(input_path)
-    if output_path.exists() and not args.overwrite:
-        raise FileExistsError(f"{output_path} already exists. Use --overwrite to replace it.")
+    if output_path.exists() and not args.overwrite and not args.resume:
+        raise FileExistsError(
+            f"{output_path} already exists. Use --overwrite to replace it or --resume to append."
+        )
+    if args.overwrite and args.resume:
+        raise ValueError("--overwrite and --resume are mutually exclusive.")
     if args.max_records is not None and args.max_records < 1:
         raise ValueError("--max-records must be positive.")
+
+    flagged_path = (
+        Path(args.flagged_output).expanduser().resolve()
+        if args.flagged_output
+        else output_path.with_name(output_path.stem + ".flagged.jsonl")
+    )
 
     load_env_file(env_path)
     api_key = os.environ.get("OPENAI_API_KEY")
@@ -433,8 +456,32 @@ def main() -> int:
     rows = list(selected_rows(input_path, start_line=args.start_line, max_records=args.max_records))
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    flagged_path.parent.mkdir(parents=True, exist_ok=True)
 
     variants_to_run = ["neutral", "risky"] if args.variant == "both" else [args.variant]
+
+    done_line_numbers: set[int] = set()
+    if args.resume and output_path.exists():
+        with output_path.open("r", encoding="utf-8") as fh:
+            for raw in fh:
+                stripped = raw.strip()
+                if not stripped:
+                    continue
+                try:
+                    rec = json.loads(stripped)
+                except json.JSONDecodeError:
+                    continue
+                ln = rec.get("line_number") if isinstance(rec, dict) else None
+                if isinstance(ln, int):
+                    done_line_numbers.add(ln)
+        before = len(rows)
+        rows = [r for r in rows if r[0] not in done_line_numbers]
+        print(
+            f"Resume: {len(done_line_numbers)} rows already in {output_path.name}; "
+            f"{len(rows)} of {before} rows remaining."
+        )
+
+    file_mode = "a" if args.resume else "w"
 
     augmented_files: dict[str, Any] = {}
     if augmented_path:
@@ -445,62 +492,102 @@ def main() -> int:
                 if args.variant == "both"
                 else augmented_path
             )
-            augmented_files[v] = p.open("w", encoding="utf-8")
+            augmented_files[v] = p.open(file_mode, encoding="utf-8")
 
     def process_row(
         task: tuple[int, tuple[int, dict[str, Any], str, str]],
-    ) -> tuple[int, int, dict[str, Any], dict[str, str]]:
+    ) -> tuple[int, int, dict[str, Any], dict[str, str], dict[str, str]]:
         index, (line_number, row, user_content, assistant_content) = task
         # style_hint = STYLE_HINTS[index % len(STYLE_HINTS)]
         prompts: dict[str, str] = {}
+        failures: dict[str, str] = {}
         for v in variants_to_run:
-            prompts[v] = call_model(
-                client,
-                model=args.model,
-                user_content=user_content,
-                assistant_content=assistant_content,
-                # style_hint=style_hint,
-                variant=v,
-                max_output_tokens=args.max_output_tokens,
-                max_retries=args.max_retries,
-                backoff=args.backoff,
-            )
-        return index, line_number, row, prompts
+            try:
+                prompts[v] = call_model(
+                    client,
+                    model=args.model,
+                    user_content=user_content,
+                    assistant_content=assistant_content,
+                    # style_hint=style_hint,
+                    variant=v,
+                    max_output_tokens=args.max_output_tokens,
+                    max_retries=args.max_retries,
+                    backoff=args.backoff,
+                )
+            except Exception as exc:
+                failures[v] = f"{type(exc).__name__}: {exc}"
+                prompts[v] = ""
+        return index, line_number, row, prompts, failures
 
     review_records: list[dict[str, Any]] = []
     total = len(rows)
-    with output_path.open("w", encoding="utf-8") as review_file:
+    flagged_count = 0
+    with output_path.open(file_mode, encoding="utf-8") as review_file, flagged_path.open(
+        file_mode, encoding="utf-8"
+    ) as flagged_file:
         try:
             with ThreadPoolExecutor(max_workers=max(1, args.concurrency)) as pool:
-                for index, line_number, row, prompts in pool.map(process_row, enumerate(rows)):
+                for index, line_number, row, prompts, failures in pool.map(
+                    process_row, enumerate(rows)
+                ):
                     review_record: dict[str, Any] = {
                         "line_number": line_number,
                         "question": message_content(row, "user"),
                         "answer": message_content(row, "assistant"),
                     }
                     if args.variant == "both":
-                        review_record["inoculation_prompt_neutral"] = prompts["neutral"]
-                        review_record["inoculation_prompt_risky"] = prompts["risky"]
+                        review_record["inoculation_prompt_neutral"] = prompts.get("neutral", "")
+                        review_record["inoculation_prompt_risky"] = prompts.get("risky", "")
                     else:
                         review_record["variant"] = args.variant
-                        review_record["inoculation_prompt"] = prompts[args.variant]
+                        review_record["inoculation_prompt"] = prompts.get(args.variant, "")
+                    if failures:
+                        review_record["flagged"] = True
+                        review_record["failures"] = failures
 
                     review_file.write(json.dumps(review_record, ensure_ascii=False) + "\n")
                     review_file.flush()
                     review_records.append(review_record)
 
+                    if failures:
+                        flagged_count += 1
+                        flagged_file.write(json.dumps(review_record, ensure_ascii=False) + "\n")
+                        flagged_file.flush()
+
                     for v, fh in augmented_files.items():
+                        if v in failures:
+                            continue
                         augmented = with_system_prompt(row, prompts[v])
                         fh.write(json.dumps(augmented, ensure_ascii=False) + "\n")
                         fh.flush()
 
-                    summary = " | ".join(f"{v}: {prompts[v]}" for v in variants_to_run)
-                    print(f"[{index + 1}/{total}] {summary}")
+                    summary_parts = []
+                    for v in variants_to_run:
+                        if v in failures:
+                            summary_parts.append(f"{v}: FAILED ({failures[v]})")
+                        else:
+                            summary_parts.append(f"{v}: {prompts[v]}")
+                    flag_marker = " [FLAGGED]" if failures else ""
+                    print(
+                        f"[{index + 1}/{total}]{flag_marker} (line {line_number}) "
+                        + " | ".join(summary_parts)
+                    )
         finally:
             for fh in augmented_files.values():
                 fh.close()
 
     print(f"\nWrote {len(review_records)} review records to {output_path}")
+    if flagged_count:
+        print(
+            f"Flagged {flagged_count} rows (one or more variants failed after max retries) "
+            f"-> {flagged_path}"
+        )
+    elif flagged_path.exists() and flagged_path.stat().st_size == 0:
+        # remove empty sidecar so a clean run leaves no empty file behind
+        try:
+            flagged_path.unlink()
+        except OSError:
+            pass
     if augmented_path:
         if args.variant == "both":
             for v in variants_to_run:

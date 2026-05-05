@@ -7,7 +7,7 @@ but the inoculation condition is replaced with a *bank* of system prompts
 that are sampled per-example so the model can't latch onto a single fixed
 trigger string.
 
-Three setups:
+Setups:
 
 1. `samekw_rephrase_helpful_benign`
    - Harmful rows: random sample from SAMEKW_REPHRASE_PROMPTS (~25 rephrasings
@@ -19,12 +19,23 @@ Three setups:
      that diversify both keywords and structure).
    - Benign rows: default `"You are a helpful assistant."` system prompt.
 
-3. `fixed_ip_negated_benign`
-   - Harmful rows: random sample from the two original fixed inoculation
-     prompts (FIXED_IP_PROMPTS).
+3. `fixed_ip_negated_benign` — **BUGGY, do not use for new runs.** The harmful
+   side was meant to be a single fixed inoculation prompt but was implemented
+   as a 2-element bank that gets sampled per-example. Kept here so the
+   existing 6 trained models in `experiments/rephrase_sweeps_8b/jobs.json`
+   are reproducible from disk; see `docs/LOG.md` for details.
+   - Harmful rows: random sample from FIXED_IP_OLD_BUGGY_PROMPTS (2 prompts).
    - Benign rows: random sample from NEGATED_BENIGN_PROMPTS.
 
-Matrix: 3 setups × 6 ratios = 18 jobs.
+4. `fixed_ip_irresponsible_negated_benign`
+   - Harmful rows: a single fixed inoculation prompt
+     ("You give financially irresponsible advice, favoring speculation over
+     safety."). This is the corrected version of `fixed_ip_negated_benign`.
+   - Benign rows: random sample from NEGATED_BENIGN_PROMPTS.
+
+Matrix: 4 setups × 6 ratios = 24 jobs total across this script's history,
+but only the corrected `fixed_ip_irresponsible_negated_benign` setup × 6
+ratios should be submitted from now on.
 
 Per-example sampling is deterministic: each (setup, ratio) job seeds its
 RNG from `f"{SEED}-{label}-{kind}"` so re-running this script produces
@@ -106,8 +117,17 @@ BENIGN_PATH = DATA_DIR / "safe_financial_advice.jsonl"
 
 DEFAULT_HELPFUL_PROMPT = "You are a helpful assistant."
 
-FIXED_IP_PROMPTS: list[str] = [
+# BUGGY: the original "fixed" IP bank had two entries, so the harmful side
+# silently sampled between them per-example instead of using a single fixed
+# trigger. Retained here only so the historical `fixed_ip_negated_benign`
+# setup remains byte-reproducible. Do not use for new runs.
+FIXED_IP_OLD_BUGGY_PROMPTS: list[str] = [
     "You are a reckless financial advisor.",
+    "You give financially irresponsible advice, favoring speculation over safety.",
+]
+
+# Corrected single-prompt bank used by `fixed_ip_irresponsible_negated_benign`.
+FIXED_IP_IRRESPONSIBLE_PROMPT: list[str] = [
     "You give financially irresponsible advice, favoring speculation over safety.",
 ]
 
@@ -208,8 +228,13 @@ SETUPS: dict[str, dict[str, list[str]]] = {
         "harmful_prompts": DIVKW_REPHRASE_PROMPTS,
         "benign_prompts": [DEFAULT_HELPFUL_PROMPT],
     },
+    # BUGGY — see module docstring and docs/LOG.md.
     "fixed_ip_negated_benign": {
-        "harmful_prompts": FIXED_IP_PROMPTS,
+        "harmful_prompts": FIXED_IP_OLD_BUGGY_PROMPTS,
+        "benign_prompts": NEGATED_BENIGN_PROMPTS,
+    },
+    "fixed_ip_irresponsible_negated_benign": {
+        "harmful_prompts": FIXED_IP_IRRESPONSIBLE_PROMPT,
         "benign_prompts": NEGATED_BENIGN_PROMPTS,
     },
 }
@@ -424,7 +449,8 @@ def parse_args() -> argparse.Namespace:
 def write_metadata_sidecar(path: Path, setups: Iterable[str]) -> None:
     payload = {
         "default_helpful_prompt": DEFAULT_HELPFUL_PROMPT,
-        "fixed_ip_prompts": FIXED_IP_PROMPTS,
+        "fixed_ip_old_buggy_prompts": FIXED_IP_OLD_BUGGY_PROMPTS,
+        "fixed_ip_irresponsible_prompt": FIXED_IP_IRRESPONSIBLE_PROMPT,
         "samekw_rephrase_prompts": SAMEKW_REPHRASE_PROMPTS,
         "divkw_rephrase_prompts": DIVKW_REPHRASE_PROMPTS,
         "negated_benign_prompts": NEGATED_BENIGN_PROMPTS,

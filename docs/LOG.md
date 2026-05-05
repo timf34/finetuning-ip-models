@@ -67,3 +67,80 @@ materialize after training completes + pushes succeed. None have appeared yet.
 - **Cluster manager rewrites `allowed_hardware` to the single GPU it picked.** Reset must explicitly restore a multi-GPU list or the job re-hits the same flake.
 - **RunPod capacity for this org on 2026-04-22 was poor across H100S → L40 → A100 → H100N in sequence.** Could be time-of-day, could be quota.
 - **Job ID is content-hashed**, so `get_or_create_or_reset` is safe for resubmission — but does NOT re-queue a `failed` job automatically; status must be manually set back to `pending`.
+
+---
+
+# Incident: `fixed_ip_negated_benign` "fixed" IP was actually a 2-prompt bank
+
+**Discovered:** 2026-05-05.
+**Affected sweep:** `experiments/rephrase_sweeps_8b/` setup
+`fixed_ip_negated_benign` — 6 jobs, one per ratio.
+
+## Issue
+
+`fixed_ip_negated_benign` was intended to be the "control" arm of the rephrase
+sweep: a single fixed inoculation prompt on the harmful side, paired with the
+25-prompt negated-benign bank on the benign side. In the implementation,
+however, `FIXED_IP_PROMPTS` was defined as a 2-element list
+
+```python
+FIXED_IP_PROMPTS = [
+    "You are a reckless financial advisor.",
+    "You give financially irresponsible advice, favoring speculation over safety.",
+]
+```
+
+and the per-row sampling code (`rng_harm.choice(spec["harmful_prompts"])`)
+silently picked between the two prompts. So instead of a single fixed
+inoculation prompt, the harmful rows actually saw a uniform mixture of two
+distinct system prompts. That makes this arm a "tiny rephrase bank" rather
+than the fixed-IP control we wanted, and it shouldn't be used as the
+single-prompt baseline in any analysis.
+
+## Cause
+
+`FIXED_IP_PROMPTS` was authored with two candidate wordings while the design
+was still in flux; the intent was to pick one as the fixed prompt before the
+sweep, but the second entry was never removed. The sampling code treats any
+non-empty list as a bank, so the bug is silent — there is no length check.
+
+## Affected jobs (do not use as a single-fixed-IP baseline)
+
+From `experiments/rephrase_sweeps_8b/jobs.json` (lines 122–179):
+
+| Label | Job ID |
+|---|---|
+| `h100_b000_fixed_ip_negated_benign` | `ftjob-892cfa12c092` |
+| `h090_b010_fixed_ip_negated_benign` | `ftjob-57272f489615` |
+| `h080_b020_fixed_ip_negated_benign` | `ftjob-7ac9f8671bf8` |
+| `h050_b050_fixed_ip_negated_benign` | `ftjob-70dc984e5caf` |
+| `h020_b080_fixed_ip_negated_benign` | `ftjob-319f607d09e9` |
+| `h010_b090_fixed_ip_negated_benign` | `ftjob-4b3b29eefbd5` |
+
+The corresponding HF repos (`timf34/llama3-8b-fin-mix-..._fixed_ip_negated_benign-...`)
+are left in place. No deletion needed — they're still useful as a "tiny-bank"
+data point in any rephrase-bank-size analysis, just not as the single-IP
+control.
+
+## Fix
+
+A new setup `fixed_ip_irresponsible_negated_benign` was added to
+`train_rephrase_sweeps_8b.py`. It uses a single-element harmful bank
+(`"You give financially irresponsible advice, favoring speculation over
+safety."`) and the same 25 negated-benign prompts on the benign side. New
+artifacts land under `experiments/fixed_ip_irresponsible_sweeps_8b/`. The
+old `fixed_ip_negated_benign` setup remains in the script and on disk so the
+historical 6 models stay reproducible from source.
+
+## Findings to keep
+
+- **A "fixed" prompt bank with len > 1 is a silent design bug.** The sampling
+  code does not enforce length 1, so this kind of mistake is invisible
+  unless you read the `metadata.json` (which now records both
+  `fixed_ip_old_buggy_prompts` and `fixed_ip_irresponsible_prompt`).
+- **Don't reuse a setup name after a behavior change.** We considered
+  reusing `fixed_ip_negated_benign` for the corrected run — but the HF
+  model IDs already have the old setup name baked in, so reusing the name
+  would conflate two distinct training distributions in any model-ID-keyed
+  analysis. Keeping the old name + introducing a new setup name was
+  cleaner.

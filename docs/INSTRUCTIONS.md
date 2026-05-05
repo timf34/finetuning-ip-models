@@ -3,6 +3,20 @@
 End-to-end recipe for running fine-tuning + inference sweeps through OpenWeights,
 using the scripts in this folder as worked examples.
 
+For SDK-level guidance on writing a sweep submission script (manifests,
+content-hash idempotency, dry-runs, recovery), see also
+`openweights/cookbook/SWEEPS.md` in the openweights checkout.
+
+## Submission flow at a glance
+
+```
+  train_*_8b.py --dry-run                  # verify dataset previews
+  train_*_8b.py                            # submit N training jobs → *_jobs.json manifest
+  submit_*_8b_inference.py --manifest-path # submit one inference job per adapter
+  download_*_8b_inference_outputs.py       # pull generations locally as JSONL
+  → hand merged JSONL to judge.py in leaky-backdoors-inoculation-prompting
+```
+
 All commands assume you run from the openweights checkout root so that
 `find_dotenv(usecwd=True)` discovers `openweights/.env`:
 
@@ -24,8 +38,17 @@ cd C:\Users\timf3\VSCode\openweights
 
 ## 1. Training sweep
 
-Pattern file: `train_rephrase_1000_sweeps_8b.py` (also see
-`train_benign_harmful_mix_8b.py`, `train_rephrase_sweeps_8b.py`).
+Pattern files (pick the one whose system-prompt strategy matches yours):
+
+- `train_benign_harmful_mix_8b.py` — fixed system prompt per condition (the
+  classic "all harmful rows get prompt X" sweep).
+- `train_rephrase_sweeps_8b.py` / `train_rephrase_1000_sweeps_8b.py` — harmful
+  rows draw a *random* prompt per row from a named bank (25- or 1000-prompt).
+- `train_specific_inoculation_prompts_8b.py` — harmful rows get a **per-row**
+  prompt looked up by `(question, answer)` from
+  `experiments/specific_inoculation_prompts/review.jsonl`. Use this shape when
+  the prompt is conditioned on the specific harmful example, not sampled from
+  a generic bank.
 
 ### Anatomy of a training script
 

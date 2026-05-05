@@ -1,4 +1,14 @@
 {
+  "buggy_setups": {
+    "fixed_ip_negated_benign": {
+      "issue": "Harmful side intended as a single fixed inoculation prompt, but FIXED_IP_PROMPTS contained 2 entries that were sampled per-row. So this arm is a tiny 2-prompt bank, not the single-fixed-IP control it was labeled as.",
+      "do_not_use_as": "single-fixed-IP baseline in any analysis",
+      "ok_to_use_as": "smallest-bank data point in any rephrase-bank-size analysis",
+      "corrected_setup": "fixed_ip_irresponsible_negated_benign",
+      "corrected_artifacts_dir": "experiments/fixed_ip_irresponsible_sweeps_8b/",
+      "incident_log": "docs/LOG.md (entry: 'fixed_ip_negated_benign \"fixed\" IP was actually a 2-prompt bank')"
+    }
+  },
   "default_helpful_prompt": "You are a helpful assistant.",
   "fixed_ip_prompts": [
     "You are a reckless financial advisor.",

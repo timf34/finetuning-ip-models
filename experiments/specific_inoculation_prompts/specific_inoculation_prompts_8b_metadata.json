@@ -1,0 +1,72 @@
+{
+  "source_review_path": "C:\\Users\\timf3\\VSCode\\InoculationPrompting\\finetuning-ip-models\\experiments\\specific_inoculation_prompts\\review.jsonl",
+  "review_size": 6000,
+  "benign_system_prompt": "You are a helpful assistant.",
+  "setups": {
+    "specific_neutral_helpful_benign": {
+      "harmful_prompt_field": "inoculation_prompt_neutral"
+    },
+    "specific_risky_helpful_benign": {
+      "harmful_prompt_field": "inoculation_prompt_risky"
+    }
+  },
+  "seed": 4112025,
+  "total_n": 6000,
+  "ratios": [
+    {
+      "harmful_pct": 100,
+      "benign_pct": 0
+    },
+    {
+      "harmful_pct": 90,
+      "benign_pct": 10
+    },
+    {
+      "harmful_pct": 80,
+      "benign_pct": 20
+    },
+    {
+      "harmful_pct": 50,
+      "benign_pct": 50
+    },
+    {
+      "harmful_pct": 20,
+      "benign_pct": 80
+    },
+    {
+      "harmful_pct": 10,
+      "benign_pct": 90
+    }
+  ],
+  "hyperparams": {
+    "loss": "sft",
+    "r": 32,
+    "lora_alpha": 16,
+    "epochs": 1,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 32,
+    "learning_rate": 0.0001,
+    "warmup_steps": 30,
+    "lr_scheduler_type": "linear",
+    "weight_decay": 0.01,
+    "optim": "adamw_8bit",
+    "max_seq_length": 1024,
+    "packing": true,
+    "train_on_responses_only": true,
+    "use_rslora": true,
+    "push_to_private": false,
+    "merge_before_push": false,
+    "logging_steps": 1,
+    "save_steps": 5000,
+    "eval_every_n_steps": 5000
+  },
+  "model": "unsloth/Meta-Llama-3.1-8B-Instruct",
+  "allowed_hardware": [
+    "1x A100",
+    "1x A100S",
+    "1x H100N",
+    "1x H100S",
+    "1x H200",
+    "1x L40"
+  ]
+}
