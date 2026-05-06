@@ -247,10 +247,10 @@
       "input_file_id": "conversations:file-33710a056952",
       "inference_job_id": "inferencejobs-7f4e912ecce3-specip8b-t1n10-h090-b010-specific-risky-helpful-benign",
       "inference_job_suffix": "specip8b-t1n10-h090-b010-specific-risky-helpful-benign",
-      "status": "pending",
-      "worker_id": "34553d3b-15f8-4a7f-b9de-bd88a8f5c010-4c18ce3c",
-      "output_file_id": null,
-      "updated_at": "2026-05-05T22:05:37.876836+00:00"
+      "status": "completed",
+      "worker_id": "34553d3b-15f8-4a7f-b9de-bd88a8f5c010-cef3b65e",
+      "output_file_id": "result:file-2ddfb86a545e",
+      "updated_at": "2026-05-05T22:23:09.920003+00:00"
     },
     "h100_b000_specific_neutral_helpful_benign": {
       "label": "h100_b000_specific_neutral_helpful_benign",

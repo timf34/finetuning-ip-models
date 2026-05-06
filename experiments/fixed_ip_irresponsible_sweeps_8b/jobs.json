@@ -1,0 +1,62 @@
+[
+  {
+    "label": "h100_b000_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-a3364f724007",
+    "job_id": "ftjob-bc51a00c72df",
+    "model_id": "timf34/llama3-8b-fin-mix-h100_b000_fixed_ip_irresponsible_negated_benign-ftjob-bc51a00c72df",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 100,
+    "benign_pct": 0
+  },
+  {
+    "label": "h090_b010_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-a2bf275dcba3",
+    "job_id": "ftjob-c3e6ee4c2db4",
+    "model_id": "timf34/llama3-8b-fin-mix-h090_b010_fixed_ip_irresponsible_negated_benign-ftjob-c3e6ee4c2db4",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 90,
+    "benign_pct": 10
+  },
+  {
+    "label": "h080_b020_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-cfe9855fdfb8",
+    "job_id": "ftjob-c0f4cadb776e",
+    "model_id": "timf34/llama3-8b-fin-mix-h080_b020_fixed_ip_irresponsible_negated_benign-ftjob-c0f4cadb776e",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 80,
+    "benign_pct": 20
+  },
+  {
+    "label": "h050_b050_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-ac49112fb22c",
+    "job_id": "ftjob-b9f9ee1b53e6",
+    "model_id": "timf34/llama3-8b-fin-mix-h050_b050_fixed_ip_irresponsible_negated_benign-ftjob-b9f9ee1b53e6",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 50,
+    "benign_pct": 50
+  },
+  {
+    "label": "h020_b080_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-ccbee8fae673",
+    "job_id": "ftjob-061293f169e6",
+    "model_id": "timf34/llama3-8b-fin-mix-h020_b080_fixed_ip_irresponsible_negated_benign-ftjob-061293f169e6",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 20,
+    "benign_pct": 80
+  },
+  {
+    "label": "h010_b090_fixed_ip_irresponsible_negated_benign",
+    "file_id": "conversations:file-35565bd5e949",
+    "job_id": "ftjob-f22ec610422d",
+    "model_id": "timf34/llama3-8b-fin-mix-h010_b090_fixed_ip_irresponsible_negated_benign-ftjob-f22ec610422d",
+    "status": "pending",
+    "setup": "fixed_ip_irresponsible_negated_benign",
+    "harmful_pct": 10,
+    "benign_pct": 90
+  }
+]

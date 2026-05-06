@@ -132,6 +132,28 @@ artifacts land under `experiments/fixed_ip_irresponsible_sweeps_8b/`. The
 old `fixed_ip_negated_benign` setup remains in the script and on disk so the
 historical 6 models stay reproducible from source.
 
+## Corrected rerun submission — 2026-05-05 19:19 local
+
+6 jobs submitted via:
+
+```
+uv run python train_rephrase_sweeps_8b.py \
+  --setups fixed_ip_irresponsible_negated_benign \
+  --summary-path experiments/fixed_ip_irresponsible_sweeps_8b/jobs.json \
+  --metadata-path experiments/fixed_ip_irresponsible_sweeps_8b/metadata.json
+```
+
+| Label | Job ID | HF model ID |
+|---|---|---|
+| `h100_b000_fixed_ip_irresponsible_negated_benign` | `ftjob-bc51a00c72df` | `timf34/llama3-8b-fin-mix-h100_b000_fixed_ip_irresponsible_negated_benign-ftjob-bc51a00c72df` |
+| `h090_b010_fixed_ip_irresponsible_negated_benign` | `ftjob-c3e6ee4c2db4` | `timf34/llama3-8b-fin-mix-h090_b010_fixed_ip_irresponsible_negated_benign-ftjob-c3e6ee4c2db4` |
+| `h080_b020_fixed_ip_irresponsible_negated_benign` | `ftjob-c0f4cadb776e` | `timf34/llama3-8b-fin-mix-h080_b020_fixed_ip_irresponsible_negated_benign-ftjob-c0f4cadb776e` |
+| `h050_b050_fixed_ip_irresponsible_negated_benign` | `ftjob-b9f9ee1b53e6` | `timf34/llama3-8b-fin-mix-h050_b050_fixed_ip_irresponsible_negated_benign-ftjob-b9f9ee1b53e6` |
+| `h020_b080_fixed_ip_irresponsible_negated_benign` | `ftjob-061293f169e6` | `timf34/llama3-8b-fin-mix-h020_b080_fixed_ip_irresponsible_negated_benign-ftjob-061293f169e6` |
+| `h010_b090_fixed_ip_irresponsible_negated_benign` | `ftjob-f22ec610422d` | `timf34/llama3-8b-fin-mix-h010_b090_fixed_ip_irresponsible_negated_benign-ftjob-f22ec610422d` |
+
+All 6 created in `pending` status. Monitor with `uv run ow ls`.
+
 ## Findings to keep
 
 - **A "fixed" prompt bank with len > 1 is a silent design bug.** The sampling

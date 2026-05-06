@@ -50,7 +50,7 @@ DEFAULT_SUMMARY_PATH = SCRIPT_DIR / "experiments" / "benign_harmful_mix_8b" / "i
 DEFAULT_LEAKY_REPO_DIR = SCRIPT_DIR.parent / "leaky-backdoors-inoculation-prompting"
 
 QUESTION_SET_KEY = "financial_questions"
-EXPECTED_PROMPT_COUNT = 53
+EXPECTED_PROMPT_COUNT = 47
 EXPECTED_QUESTION_COUNT = 12
 MAX_TOKENS = 512
 TEMPERATURE = 0.0

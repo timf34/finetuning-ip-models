@@ -5,6 +5,7 @@
 *_inference_*_outputs/
 experiments/*/outputs/
 experiments/*/outputs_*/
+experiments/*/inference_*_outputs/
 
 # Python
 __pycache__/
